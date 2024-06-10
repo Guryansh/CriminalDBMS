@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'css/cp.css' %}">
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            // Hide all tab content
+            tabcontent = document.getElementsByClassName("tab-pane fade");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Remove the 'active' class from all tab buttons
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the specific tab content
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).className += " show active";
+            // Add the 'active' class to the button that opened the tab
+            evt.currentTarget.className += " active";
+        }
+
+        // By default, open the first tab
+        document.getElementById("defaultOpen").click();</script>
+</head>
+
+<body>
+<div class="container emp-profile" style="border: 1px solid black;">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
+                         alt=""/>
+                    <div class="file btn btn-lg btn-primary">
+                        Change Photo
+                        <input type="file" name="file"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head" style="margin-top: 9%;">
+                    <h5>
+                        Kshiti Ghelani
+                    </h5>
+                    <h6>
+                        Web Developer and Designer
+                    </h6>
+                    <p class="proile-rating" style="margin-bottom: 10%;">RANKINGS : <span>8/10</span></p>
+                    <div style="display: flex;">
+                        <div>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" class="tablinks" onclick="openTab(event, 'tab1')"
+                                       data-toggle="tab" href="#" role="tab" aria-controls="home"
+                                       aria-selected="true">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" class="tablinks" onclick="openTab(event, 'tab2')"
+                                       data-toggle="tab" href="#" role="tab" aria-controls="home"
+                                       aria-selected="true">About2</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" class="tablinks" onclick="openTab(event, 'tab3')"
+                                       data-toggle="tab" href="#" role="tab" aria-controls="home"
+                                       aria-selected="true">About3</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="margin-left: 22%;margin-right: 0;">
+                            <button style="border: none;color: white;background-color: #007bff;padding: 4px 8px;border-radius: 5px;">
+                                Add User
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4" style="margin-top: -6%;">
+                <div class="profile-work">
+                    <p>WORK LINK</p>
+                    <a href="">Website Link</a><br/>
+                    <a href="">Bootsnipp Profile</a><br/>
+                    <a href="">Bootply Profile</a>
+                    <p>SKILLS</p>
+                    <a href="">Web Designer</a><br/>
+                    <a href="">Web Developer</a><br/>
+                    <a href="">WordPress</a><br/>
+                    <a href="">WooCommerce</a><br/>
+                    <a href="">PHP, .Net</a><br/>
+                </div>
+            </div>
+            <div class="col-md-8" style="margin-top: 2%;">
+                <div class="tab-content profile-tab">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>User Id</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" placeholder="User Id"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Name</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" placeholder="Name"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Email</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="email" placeholder="Email"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Phone</label>
+                            </div>
+                            <div class="col-md-4" style="margin-left: -20%;">
+                                <p><input type="text" placeholder="Phone No."></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Profession</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" placeholder="Web Developer"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Experience</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Expert</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Hourly Rate</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>10$/hr</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Total Projects</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>230</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>English Level</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Expert</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Availability</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>6 months</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Your Bio</label><br/>
+                                <p>Your detail description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'css/cp.css' %}">
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            // Hide all tab content
+            tabcontent = document.getElementsByClassName("tab-pane fade");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Remove the 'active' class from all tab buttons
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the specific tab content
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).className += " show active";
+            // Add the 'active' class to the button that opened the tab
+            evt.currentTarget.className += " active";
+        }
+
+        // By default, open the first tab
+        {#document.getElementById("defaultOpen").click();#}
+    </script>
+</head>
+
+<body>
+<div class="container emp-profile" style="border: 1px solid black;">
+    <form id="upload-form" method="post" action="{% url 'create_profile' %}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <video id="video" autoplay></video>
+                    <div class="file btn btn-lg btn-primary" id="capture-btn">
+                        Take Photo
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head" style="margin-top: 9%;">
+                    <h5>
+                        Phoenix
+                    </h5>
+                    <h6>
+                        Your Trusted Criminal Record Resource
+                    </h6>
+                    <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                    <div style="display: flex;">
+                        <div>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" class="tablinks" onclick="openTab(event, 'tab1')"
+                                       data-toggle="tab" role="tab" aria-controls="home"
+                                       aria-selected="true">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" class="tablinks" onclick="openTab(event, 'tab2')"
+                                       data-toggle="tab" role="tab" aria-controls="home"
+                                       aria-selected="true">Criminal History</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" class="tablinks" onclick="openTab(event, 'tab3')"
+                                       data-toggle="tab" role="tab" aria-controls="home"
+                                       aria-selected="true">Other</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="margin-left: 22%;margin-right: 0;">
+                            <input type="hidden" id="photo-data" name="photo_data">
+                            <button type="submit"
+                                    style="border: none;color: white;background-color: #007bff;padding: 4px 8px;border-radius: 5px;">
+                                Add Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <canvas id="canvas" width="320" height="240"></canvas>
+                    <div class="file btn btn-lg btn-primary">
+                        Captured Photo
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8" style="margin-top: 2%;">
+                <div class="tab-content profile-tab">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Name</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" placeholder="Name" name="name" required maxlength="100"> *</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Alias</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" name="alias" placeholder="Alias"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Gender</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><select placeholder="Gender" name="gender">
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Date of Birth</label>
+                            </div>
+                            <div class="col-md-4" style="margin-left: -20%;">
+                                <p><input type="date" name="date" placeholder="Date of Birth" required> *</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Place of Birth</label>
+                            </div>
+                            <div class="col-md-4" style="margin-left: -20%;">
+                                <p><input type="text" name="pob" placeholder="Place of Birth"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Nationality</label>
+                            </div>
+                            <div class="col-md-4" style="margin-left: -20%;">
+                                <p><input type="text" name="nation" placeholder="Nationality"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="crime-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Gang Name</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" placeholder="Gang Name" name="gname" maxlength="100"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Wanted By</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" name="wby" placeholder="Department Name" required> *</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Criminal Category</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" name="ctype" placeholder="E.g. Murderer, Arsonist" required> *</p>
+                            </div>
+                        </div>
+                    </div>
+<div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="crime-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Body Marks</label>
+                            </div>
+                            <div class="col-md-6" style="margin-left: -20%;">
+                                <p><input type="text" placeholder="Body Marks" name="bmarks" maxlength="100"></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="{% static 'js/camera.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Photo</title>
+    <link rel="stylesheet" href="{% static 'css/camera.css' %}">
+</head>
+<body style="background-color:#eaeaea2b;">
+    <div class="top-nav">
+        <div style="background-color: #e6e7edff; display: flex; flex-direction: row; justify-content: space-between;border-bottom: solid;border-color: #e6e7edff;height: 55px;z-index: 1000;margin-bottom: 1%;">
+            <div style="display: flex;flex-direction: row;border-right: solid;border-color: #e6e7edff;width: 209.8px;">
+                <!-- <div class="logo"><img class="icon-g" src="" alt=""></div> -->
+                <div style="margin-top: 8%;margin-left: 15% ;" class="logo-text">PHOENIX</div>
+            </div>
+        </div>
+    </div>
+    <div class="C">
+        <ul>
+            <li class="Con1">
+                <div class="camera-wrapper" style="margin-top: 0%;">
+                    <h2 style="text-align: center;color: black;margin-left: -63%;" >Take Photo</h2>
+                    <video id="video" width="280" height="210" autoplay></video>
+                </div>
+                <div class="btn-div">
+                    <button class="startcam" id="start-btn">Start Camera</button>
+                    <button class="cap" id="capture-btn">Capture</button>
+                </div>
+    
+                <div class="photo-wrapper ">
+                    <h2 style="text-align: center;color: black;" >Your Photo</h2>
+                    <canvas id="canvas" width="320" height="240"></canvas>
+                    <form id="upload-form" method="post" action="{% url 'upload_photo' %}">
+                        {% csrf_token %}
+                        <input type="hidden" id="photo-data" name="photo_data">
+                        <button class="Search search1" style="margin-left: 2%;" type="submit">Search</button>
+                    </form>
+    
+                </div>
+    
+    
+                <!-- <button>Search</button> -->
+    
+            </li>
+        </ul>
+    </div>
+    <div class="form-container" style="margin-top: 1%;height: 650px; background-color: #eaeaea2b;">
+        <form class="form" method="post" action="{% url 'home' %}">
+            {% csrf_token %}
+            <div class="grid-container">
+                <div class="form-group">
+                    <label class="input-name" for="name">Name</label>
+                    <input style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="name" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="input-name"  for="name">Alias</label>
+                    <input style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="alias" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="input-name" >Gender</label>
+                    <select style="width: 68%;border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="gender">
+    
+                        <option value="1" selected>Male</option>
+                        <option value="0">Female</option>
+    
+                    </select>
+    
+                </div>
+                <div class="form-group">
+                    <label class="input-name"  >Date of Birth</label>
+                    <input style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="date" type="date">
+                </div>
+                <div class="form-group">
+                    <label class="input-name"  >Place of Birth</label>
+                    <input style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="pob" id="" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="input-name"  >Nationality</label>
+                    <input style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="nation" id="" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="input-name"  >Body Marks (if any)</label>
+                    <input style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="body_marks" id="" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="input-name"  >Gang Affiliation</label>
+                    <input style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="gname" id="" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="input-name"  >Charges</label>
+                    <input  style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="ctype" id="" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="input-name"  >Wanted By</label>
+                    <input  style="border: none;background-color: rgba(180, 179, 179, 0.131);color:#000000" name="wby" id="" type="text">
+                </div>
+                <button type="submit" style="margin-left: 80.5%;" class="form-submit-btn">Search</button>
+            </div>
+        </form>
+    </div>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    {#const photo = document.getElementById('photo');#}
+    const captureButton = document.getElementById('capture-btn');
+    {#const stopButton = document.getElementById('stop-btn');#}
+    const startButton = document.getElementById('start-btn');
+    const photoDataInput = document.getElementById('photo-data');
+    {#const photoContainer = document.getElementById('photo-container');#}
+    let stream;
+    let photosCaptured = 0;
+
+    async function setupCamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({video: true});
+            video.srcObject = stream;
+        } catch (err) {
+            console.error("Error accessing webcam:", err);
+        }
+    }
+
+    function capturePhoto() {
+        // Set canvas dimensions to match video dimensions
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        //const photo = new Image();
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Set photo dimensions to match canvas dimensions
+        {#photo.width = canvas.width;#}
+        {#photo.height = canvas.height;#}
+        {##}
+        {#// Set photo src with canvas data#}
+        {#photo.src = canvas.toDataURL('image/jpeg', 0.8); // Adjust quality here (0.8 is 80% quality)#}
+        const photoData = canvas.toDataURL('image/jpeg', 0.8);
+        photoDataInput.value = photoData;
+        {#document.getElementById('photo-container').style.display = 'block';#}
+        stopCamera();
+    }
+
+    function stopCamera() {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        video.srcObject = null;
+    }
+
+    function startCamera() {
+        setupCamera();
+    }
+
+    {#setupCamera();#}
+
+    captureButton.addEventListener('click', capturePhoto);
+    {#stopButton.addEventListener('click', stopCamera);#}
+    startButton.addEventListener('click', startCamera);
+</script>
+</body>
+</html>

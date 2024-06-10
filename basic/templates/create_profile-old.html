@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile</title>
+    <style>
+        #video-container {
+            margin: 20px auto;
+            width: 400px;
+        }
+
+        #video {
+            width: 100%;
+            border: 2px solid black;
+        }
+
+        #capture-btn, #stop-btn, #start-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+
+        #photo-container {
+            margin: 20px auto;
+            width: 400px;
+        }
+
+        #photo {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="video-container">
+    <video id="video" autoplay></video>
+</div>
+<button id="capture-btn">Capture Photo</button>
+<button id="stop-btn">Stop Camera</button>
+<button id="start-btn">Start Camera</button>
+
+<form id="upload-form" method="post" action="{% url 'create_profile' %}">
+    {% csrf_token %}
+
+    <label for="id_folder_name">Criminal File No.:</label>
+        <input type="text" id="id_folder_name" name="folder_name" required maxlength="100">
+        <br><br>
+
+        <!-- Name Field -->
+        <label for="id_name">Name:</label>
+        <input type="text" id="id_name" name="name" required maxlength="100">
+        <br><br>
+
+        <!-- Gender Field -->
+        <label for="id_gender">Gender:</label>
+        <select id="id_gender" name="gender" required>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+        </select>
+        <br><br>
+
+        <!-- Body Marks Field -->
+        <label for="id_body_marks">Body Marks:</label>
+        <input type="text" id="id_body_marks" name="body_marks" required maxlength="100">
+        <br><br>
+
+        <!-- Education Field -->
+        <label for="id_education">Education:</label>
+        <input type="text" id="id_education" name="education" required maxlength="100">
+        <br><br>
+
+        <label for="id_ctype">Criminal type:</label>
+        <input type="text" id="id_ctype" name="ctype" required maxlength="100">
+        <br><br>
+    <input type="hidden" id="photo-data" name="photo_data">
+    <button type="submit">Upload Photo</button>
+</form>
+
+<canvas id="canvas" style="display:none;"></canvas>
+<div id="photo-container" style="display:none;">
+    <img id="photo" alt="Captured Photo">
+</div>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const photo = document.getElementById('photo');
+    const captureButton = document.getElementById('capture-btn');
+    const stopButton = document.getElementById('stop-btn');
+    const startButton = document.getElementById('start-btn');
+    const photoDataInput = document.getElementById('photo-data');
+    const photoContainer = document.getElementById('photo-container');
+    let stream;
+    let photosCaptured = 0;
+
+    async function setupCamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({video: true});
+            video.srcObject = stream;
+        } catch (err) {
+            console.error("Error accessing webcam:", err);
+        }
+    }
+
+    function capturePhoto() {
+        // Set canvas dimensions to match video dimensions
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        //const photo = new Image();
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Set photo dimensions to match canvas dimensions
+        photo.width = canvas.width;
+        photo.height = canvas.height;
+
+        // Set photo src with canvas data
+        photo.src = canvas.toDataURL('image/jpeg', 0.8); // Adjust quality here (0.8 is 80% quality)
+        const photoData = canvas.toDataURL('image/jpeg', 0.8);
+        photoDataInput.value = photoData;
+        document.getElementById('photo-container').style.display = 'block';
+        //photoContainer.appendChild(photo);
+        //photosCaptured++;
+
+        //if (photosCaptured < 10) {
+        //    setTimeout(capturePhoto, 500); // Capture next photo after 500 milliseconds
+        //} else {
+        // Once all photos are captured, stop the camera
+        //    stopCamera();
+        //}
+    }
+
+    function stopCamera() {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        video.srcObject = null;
+    }
+
+    function startCamera() {
+        setupCamera();
+    }
+
+    setupCamera();
+
+    captureButton.addEventListener('click', capturePhoto);
+    stopButton.addEventListener('click', stopCamera);
+    startButton.addEventListener('click', startCamera);
+</script>
+</body>
+</html>
